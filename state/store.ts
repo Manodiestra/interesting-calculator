@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import investmentReducer from './slices/investmentConfigSlice';
 
 const store = configureStore({
-  reducer: { },
+  reducer: {
+    investment: investmentReducer,
+  },
 });
 
 export type AppDispatch = typeof store.dispatch;
