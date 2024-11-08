@@ -1,31 +1,6 @@
 import { RootState } from '../store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-type InvestmentIllustration = {
-  principleInvestment: number;
-  interestRate: number;
-  investmentDuration: number;
-  investmentDurationUnit: 'years' | 'months';
-  compoundingFrequency: 'continuously' | 'daily' | 'monthly' | 'quarterly' | 'annually';
-  recurringInvestmentAmount?: number;
-  recurringInvestmentFrequency?: 'daily' | 'weekly' | 'monthly' | 'annually';
-  recurringInvestmentFrequencyUnit?: 'years' | 'months';
-  startDate?: Date;
-  endDate?: Date;
-  inflationRate?: number;
-  taxRate?: number;
-  compoundingStartDelay?: number; // Optional delay before compounding
-  currency?: string;
-  investmentGoal?: number;
-};
-
-type Configuration = {
-  label: string;
-  dateCreated: Date;
-  color: string;
-  tags: string[];
-  illustrations: InvestmentIllustration[];
-};
+import { Configuration } from '../../types/illustrations';
 
 interface InvestmentState {
   configurations: Configuration[];
