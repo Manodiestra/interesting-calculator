@@ -1,10 +1,13 @@
 import React from 'react';
 import { useAppSelector } from '../state/hooks';
-import { StyleSheet, FlatList, Dimensions } from 'react-native';
+import { StyleSheet, FlatList, Dimensions, View } from 'react-native';
 import ConfigSummaryCard from './ConfigSummaryCard';
+import { FAB } from 'react-native-paper';
+import { useRouter } from 'expo-router';
 
 const LocalConfigurations: React.FC = () => {
   const configurations = useAppSelector((state) => state.investment.configurations);
+  const router = useRouter();
 
   const getNumColumns = () => {
     const screenWidth = Dimensions.get('window').width;
@@ -13,30 +16,47 @@ const LocalConfigurations: React.FC = () => {
     if (screenWidth < 1200) return 3;
     return 4;
   };
-  console.log('COLS', getNumColumns(), 'CONF', configurations);
 
   return (
-    <FlatList
-      data={configurations}
-      keyExtractor={(item, index) => index.toString()}
-      renderItem={({ item }) => (
-        <ConfigSummaryCard
-          label={item.label}
-          tags={item.tags}
-          dateCreated={item.dateCreated}
-          illustrationCount={item.illustrations.length}
-          onPress={() => {}}
-        />
-      )}
-      numColumns={getNumColumns()}
-      contentContainerStyle={styles.container}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={configurations}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <ConfigSummaryCard
+            label={item.label}
+            tags={item.tags}
+            dateCreated={item.dateCreated}
+            illustrationCount={item.illustrations.length}
+            onPress={() => {}}
+          />
+        )}
+        numColumns={getNumColumns()}
+        contentContainerStyle={styles.listContainer}
+      />
+      <FAB
+        style={styles.fab}
+        icon="plus"
+        onPress={() => router.push('./AddInterestConfigurationForm')}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  listContainer: {
+    backgroundColor: 'purple',
+    flex: 1,
     padding: 8,
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });
 
