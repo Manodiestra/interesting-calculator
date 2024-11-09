@@ -5,12 +5,13 @@ import { useDispatch } from 'react-redux';
 import { addConfiguration } from '../state/slices/investmentConfigSlice';
 import { useRouter } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Menu, Button, Text } from 'react-native-paper';
+import { Menu, Button, Text, useTheme } from 'react-native-paper';
 import { Configuration, InvestmentIllustration } from '../types/illustrations';
 import FormTextInput from '../components/FormTextInput';
 import { toTitleCase } from '../utils/formatters';
 
 const AddInterestConfigurationForm: React.FC = () => {
+  const theme = useTheme();
   const { control, handleSubmit, setValue, watch } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
@@ -50,7 +51,7 @@ const AddInterestConfigurationForm: React.FC = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <ScrollView contentContainerStyle={[styles.scrollContainer, { backgroundColor: theme.colors.secondaryContainer }]}>
       <View style={styles.container}>
         <FormTextInput
           control={control}
@@ -112,6 +113,7 @@ const AddInterestConfigurationForm: React.FC = () => {
                   icon={({ size, color }) => (
                     <MaterialIcons name="arrow-drop-down" size={size} color={color} />
                   )}
+                  mode='outlined'
                 >
                   {investmentDurationUnit}
                 </Button>
@@ -134,6 +136,7 @@ const AddInterestConfigurationForm: React.FC = () => {
                 icon={({ size, color }) => (
                   <MaterialIcons name="arrow-drop-down" size={size} color={color} />
                 )}
+                mode='outlined'
               >
                 {toTitleCase(compoundingFrequency)}
               </Button>

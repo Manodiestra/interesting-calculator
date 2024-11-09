@@ -2,10 +2,11 @@ import React from 'react';
 import { useAppSelector } from '../state/hooks';
 import { StyleSheet, FlatList, Dimensions, View } from 'react-native';
 import ConfigSummaryCard from './ConfigSummaryCard';
-import { FAB } from 'react-native-paper';
+import { FAB, useTheme } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 
 const LocalConfigurations: React.FC = () => {
+  const theme = useTheme();
   const configurations = useAppSelector((state) => state.investment.configurations);
   const router = useRouter();
 
@@ -18,7 +19,7 @@ const LocalConfigurations: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.secondaryContainer }]}>
       <FlatList
         data={configurations}
         keyExtractor={(item, index) => index.toString()}
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listContainer: {
-    backgroundColor: 'purple',
     flex: 1,
     padding: 8,
   },

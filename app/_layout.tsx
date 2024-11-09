@@ -1,28 +1,25 @@
 import React from 'react';
-import { Platform, View, StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { PaperProvider, useTheme } from 'react-native-paper';
 import { Stack, Slot } from 'expo-router';
 import { Provider } from 'react-redux';
 import store from '../state/store';
 
-const ThemedBackground: React.FC = ({ children }) => {
-  const theme = useTheme();
-  console.log('THEME,', theme);
-
-  return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {children}
-    </View>
-  );
-};
-
 export default function Layout() {
+  const theme = useTheme();
   return (
     <Provider store={store}>
       <PaperProvider>
-        <ThemedBackground>
-          {Platform.OS === 'web' ? <Slot /> : <Stack />}
-        </ThemedBackground>
+      {Platform.OS === 'web' ? (
+          <Slot />
+        ) : (
+          <Stack
+            screenOptions={{
+              headerStyle: { backgroundColor: theme.colors.primary },
+              headerTintColor: theme.colors.onPrimary,
+            }}
+          />
+        )}
       </PaperProvider>
     </Provider>
   );
