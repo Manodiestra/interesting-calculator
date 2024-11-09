@@ -3,6 +3,10 @@ import { View, StyleSheet } from "react-native";
 import { Stack } from "expo-router";
 import LocalConfigurations from "../components/LocalConfigurations";
 
+if (__DEV__) {
+  require("../ReactotronConfig");
+}
+
 export default function Index() {
   return (
     <>
