@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { View, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addConfiguration } from '../state/slices/investmentConfigSlice';
 import { useRouter } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Menu, Button, Text } from 'react-native-paper';
 import { Configuration, InvestmentIllustration } from '../types/illustrations';
 import FormTextInput from '../components/FormTextInput';
+import { toTitleCase } from '../utils/formatters';
 
 const AddInterestConfigurationForm: React.FC = () => {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, setValue, watch } = useForm();
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const [durationUnitVisible, setDurationUnitVisible] = useState(false);
+  const [frequencyVisible, setFrequencyVisible] = useState(false);
+
+  const investmentDurationUnit = watch("investmentDurationUnit", "years");
+  const compoundingFrequency = watch("compoundingFrequency", "annually");
 
   const onSubmit = (data: {
     label: string;
@@ -45,18 +54,18 @@ const AddInterestConfigurationForm: React.FC = () => {
       <View style={styles.container}>
         <FormTextInput
           control={control}
-          label="Label"
+          label="Title"
           name="label"
           defaultValue=""
-          placeholder="Configuration Label"
+          placeholder="Illustration title"
         />
 
         <FormTextInput
           control={control}
-          label="Principal Investment"
+          label="Principal"
           name="principleInvestment"
           defaultValue=""
-          placeholder="Principal Investment"
+          placeholder="Principal investment"
           keyboardType="numeric"
           validation={{
             required: 'Principal investment is required',
@@ -69,7 +78,7 @@ const AddInterestConfigurationForm: React.FC = () => {
           label="Interest Rate (%)"
           name="interestRate"
           defaultValue=""
-          placeholder="Interest Rate"
+          placeholder="Interest rate"
           keyboardType="numeric"
           validation={{
             required: 'Interest rate is required',
@@ -77,36 +86,70 @@ const AddInterestConfigurationForm: React.FC = () => {
           }}
         />
 
-        <FormTextInput
-          control={control}
-          label="Investment Duration"
-          name="investmentDuration"
-          defaultValue=""
-          placeholder="Investment Duration"
-          keyboardType="numeric"
-          validation={{
-            required: 'Investment duration is required',
-            pattern: { value: /^[0-9]*$/, message: 'Enter a valid number' },
-          }}
-        />
+        <View style={styles.row}>
+          <View style={styles.durationInput} >
+            <FormTextInput
+              control={control}
+              label="Duration"
+              name="investmentDuration"
+              defaultValue=""
+              placeholder="Investment duration"
+              keyboardType="numeric"
+              validation={{
+                required: 'Investment duration is required',
+                pattern: { value: /^[0-9]*$/, message: 'Enter a valid number' },
+              }}
+            />
+          </View>
+          <View style={styles.unitPickerContainer}>
+            <Text style={styles.label}>Unit</Text>
+            <Menu
+              visible={durationUnitVisible}
+              onDismiss={() => setDurationUnitVisible(false)}
+              anchor={
+                <Button
+                  onPress={() => setDurationUnitVisible(true)}
+                  icon={({ size, color }) => (
+                    <MaterialIcons name="arrow-drop-down" size={size} color={color} />
+                  )}
+                >
+                  {investmentDurationUnit}
+                </Button>
+              }
+            >
+              <Menu.Item onPress={() => { setValue("investmentDurationUnit", "years"); setDurationUnitVisible(false); }} title="Years" />
+              <Menu.Item onPress={() => { setValue("investmentDurationUnit", "months"); setDurationUnitVisible(false); }} title="Months" />
+            </Menu>
+          </View>
+        </View>
 
-        <FormTextInput
-          control={control}
-          label="Investment Duration Unit"
-          name="investmentDurationUnit"
-          defaultValue="years"
-          placeholder="years or months"
-        />
+        <View style={styles.pickerContainer}>
+          <Text style={styles.label}>Compounding Frequency</Text>
+          <Menu
+            visible={frequencyVisible}
+            onDismiss={() => setFrequencyVisible(false)}
+            anchor={
+              <Button
+                onPress={() => setFrequencyVisible(true)}
+                icon={({ size, color }) => (
+                  <MaterialIcons name="arrow-drop-down" size={size} color={color} />
+                )}
+              >
+                {toTitleCase(compoundingFrequency)}
+              </Button>
+            }
+          >
+            <Menu.Item onPress={() => { setValue("compoundingFrequency", "continuously"); setFrequencyVisible(false); }} title="Continuously" />
+            <Menu.Item onPress={() => { setValue("compoundingFrequency", "daily"); setFrequencyVisible(false); }} title="Daily" />
+            <Menu.Item onPress={() => { setValue("compoundingFrequency", "monthly"); setFrequencyVisible(false); }} title="Monthly" />
+            <Menu.Item onPress={() => { setValue("compoundingFrequency", "quarterly"); setFrequencyVisible(false); }} title="Quarterly" />
+            <Menu.Item onPress={() => { setValue("compoundingFrequency", "annually"); setFrequencyVisible(false); }} title="Annually" />
+          </Menu>
+        </View>
 
-        <FormTextInput
-          control={control}
-          label="Compounding Frequency"
-          name="compoundingFrequency"
-          defaultValue="annually"
-          placeholder="e.g., daily, monthly"
-        />
-
-        <Button title="Add Configuration" onPress={handleSubmit(onSubmit)} />
+        <Button mode='contained' onPress={handleSubmit(onSubmit)}>
+          Add Configuration
+        </Button>
       </View>
     </ScrollView>
   );
@@ -119,6 +162,26 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  durationInput: {
+    flex: 0.6,
+    marginRight: 10,
+  },
+  unitPickerContainer: {
+    flex: 0.4,
+  },
+  pickerContainer: {
+    marginVertical: 16,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
 });
 
