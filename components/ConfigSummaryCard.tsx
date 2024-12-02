@@ -5,7 +5,7 @@ import { View, StyleSheet } from 'react-native';
 type ConfigSummaryCardProps = {
   label: string;
   tags: string[];
-  dateCreated: Date;
+  dateCreated: string;
   illustrationCount: number;
   onPress: () => void;
 };
