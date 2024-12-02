@@ -1,4 +1,5 @@
 export type InvestmentIllustration = {
+  label: string;
   principleInvestment: number;
   interestRate: number;
   investmentDuration: number;
@@ -7,8 +8,8 @@ export type InvestmentIllustration = {
   recurringInvestmentAmount?: number;
   recurringInvestmentFrequency?: 'daily' | 'weekly' | 'monthly' | 'annually';
   recurringInvestmentFrequencyUnit?: 'years' | 'months';
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   inflationRate?: number;
   taxRate?: number;
   compoundingStartDelay?: number;
@@ -18,7 +19,7 @@ export type InvestmentIllustration = {
 
 export type Configuration = {
   label: string;
-  dateCreated: Date;
+  dateCreated: string;
   color: string;
   tags: string[];
   illustrations: InvestmentIllustration[];

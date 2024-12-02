@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { addConfiguration } from '../state/slices/investmentConfigSlice';
@@ -12,7 +12,7 @@ import { toTitleCase } from '../utils/formatters';
 
 const AddInterestConfigurationForm: React.FC = () => {
   const theme = useTheme();
-  const { control, handleSubmit, setValue, watch } = useForm();
+  const { control, handleSubmit, setValue, watch } = useForm<InvestmentIllustration>();
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -22,17 +22,10 @@ const AddInterestConfigurationForm: React.FC = () => {
   const investmentDurationUnit = watch("investmentDurationUnit", "years");
   const compoundingFrequency = watch("compoundingFrequency", "annually");
 
-  const onSubmit = (data: {
-    label: string;
-    principleInvestment: number;
-    interestRate: number;
-    investmentDuration: number;
-    investmentDurationUnit: 'years' | 'months';
-    compoundingFrequency: 'continuously' | 'daily' | 'monthly' | 'quarterly' | 'annually';
-  }) => {
+  const onSubmit: SubmitHandler<InvestmentIllustration> = data => {
     const newConfiguration: Configuration = {
       label: data.label,
-      dateCreated: new Date(),
+      dateCreated: new Date().toISOString(),
       color: '#000',
       tags: [],
       illustrations: [

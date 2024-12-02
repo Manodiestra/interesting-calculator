@@ -11,7 +11,7 @@ type ConfigSummaryCardProps = {
 };
 
 const ConfigSummaryCard: React.FC<ConfigSummaryCardProps> = ({ label, tags, dateCreated, illustrationCount, onPress }) => {
-  const formattedDate = dateCreated.toLocaleDateString(); // Format date as human-readable
+  const formattedDate = new Date(dateCreated).toLocaleDateString();
 
   return (
     <Card style={styles.card} onPress={onPress}>
