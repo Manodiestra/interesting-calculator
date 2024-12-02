@@ -35,5 +35,6 @@ const investmentSlice = createSlice({
 export const { addConfiguration, updateConfiguration, removeConfiguration } = investmentSlice.actions;
 
 export const selectInvestmentConfigs = (state: RootState) => state.investment.configurations;
+export const selectOneInvestmentConfig = (state: RootState, index: number) => state.investment.configurations[index];
 
 export default investmentSlice.reducer;

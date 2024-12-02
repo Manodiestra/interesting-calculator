@@ -23,13 +23,13 @@ const LocalConfigurations: React.FC = () => {
       <FlatList
         data={configurations}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <ConfigSummaryCard
             label={item.label}
             tags={item.tags}
             dateCreated={item.dateCreated}
             illustrationCount={item.illustrations.length}
-            onPress={() => {}}
+            onPress={() => router.push({ pathname: './ConfigurationDisplayScreen', params: { configurationIndex: index } })}
           />
         )}
         numColumns={getNumColumns()}
