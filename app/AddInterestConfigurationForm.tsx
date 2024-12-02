@@ -12,7 +12,13 @@ import { toTitleCase } from '../utils/formatters';
 
 const AddInterestConfigurationForm: React.FC = () => {
   const theme = useTheme();
-  const { control, handleSubmit, setValue, watch } = useForm<InvestmentIllustration>();
+  const { control, handleSubmit, setValue, watch } = useForm<InvestmentIllustration>({
+    defaultValues: {
+      label: '',
+      investmentDurationUnit: 'years',
+      compoundingFrequency: 'annually',
+    },
+  });
   const dispatch = useDispatch();
   const router = useRouter();
 
